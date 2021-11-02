@@ -1,0 +1,21 @@
+name: Connect Backlog
+on:
+  pull_request:
+    branches:
+      - master
+    types: [edited]
+jobs:
+  extract_issue_id:
+    runs-on: ubuntu-latest
+    steps:
+      - id: output-set
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const pr_body = github.event.pull_request.body
+            console.log(pr_body)
+            return pr_body
+      - run: |
+          if [[ "${{steps.output-set.outputs.result}}" != "" ]]; then
+            echo hello
+          fi

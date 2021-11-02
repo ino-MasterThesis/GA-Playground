@@ -13,9 +13,10 @@ jobs:
         with:
           script: |
             const pr_body = context.payload.pull_request.body
-            console.log(pr_body)
-            return pr_body
+            const bl_pat = pr_body.match(/https:\/\/ventus-inc\.backlog\.com\/view\/(VENTUS_ADMIN-[0-9]+)/)[1]
+            console.log(bl_pat)
+            return bl_pat
       - run: |
-          if [[ "${{steps.output-set.outputs.result}}" != "" ]]; then
+          if [[ ${{steps.output-set.outputs.result}} != "" ]]; then
             echo hello
           fi

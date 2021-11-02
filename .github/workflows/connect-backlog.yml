@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: issue-id
-        name: extract_issue_id
+        name: Extract Issue ID
         uses: actions/github-script@v5
         with:
           script: |
@@ -20,11 +20,8 @@ jobs:
               bl_pat = bl_pat[1]
             }
             return bl_pat
-  update_backlog_issue:
-    runs-on: ubuntu-latest
-    needs: [extract_issue_id]
-    steps:
-      - uses: actions/checkout@v2
-      - name: hoge
+      - name: Update Backlog Issue
+        if: ${{steps.issue-id.outputs.result != null && steps.issue-id.outputs.result != ''}}
         run: |
+          echo ${{steps.issue-id.outputs.result}}
           curl --location --request GET 'https://ventus-inc.backlog.com/api/v2/issues/${{steps.issue-id.outputs.result}}?apiKey=${{secrets.BACKLOG_USER_API_KEY}}'

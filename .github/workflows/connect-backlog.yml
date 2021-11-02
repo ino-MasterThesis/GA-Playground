@@ -16,10 +16,9 @@ jobs:
             const pr_body = context.payload.pull_request.body
             const bl_pat = pr_body.match(/https:\/\/ventus-inc\.backlog\.com\/view\/(VENTUS_ADMIN-[0-9]+)/)
             console.log(bl_pat)
-            if (!bl_pat) {
-              bl_pat = bl_pat[1]
+            if (!!bl_pat) {
+              return bl_pat[1]
             }
-            return bl_pat
       - name: Update Backlog Issue
         if: ${{steps.issue-id.outputs.result != null && steps.issue-id.outputs.result != ''}}
         run: |

@@ -8,15 +8,20 @@ jobs:
   extract_issue_id:
     runs-on: ubuntu-latest
     steps:
-      - id: output-set
+      - id: issue-id
+        name: extract_issue_id
         uses: actions/github-script@v5
         with:
           script: |
             const pr_body = context.payload.pull_request.body
-            const bl_pat = pr_body.match(/https:\/\/ventus-inc\.backlog\.com\/view\/(VENTUS_ADMIN-[0-9]+)/)[1]
+            const bl_pat = pr_body.match(/https:\/\/ventus-inc\.backlog\.com\/view\/(VENTUS_ADMIN-[0-9]+)/)?.[1]
             console.log(bl_pat)
             return bl_pat
-      - run: |
-          if [[ ${{steps.output-set.outputs.result}} != "" ]]; then
-            echo hello
-          fi
+  update_backlog_issue:
+    runs-on: ubuntu-latest
+    needs: [extract_issue_id]
+    steps:
+      - uses: actions/checkout@v2
+      - name: hoge
+        run: |
+          curl --location --request GET 'https://ventus-inc.backlog.com/api/v2/issues/${{steps.issue-id.outputs.result}}?apiKey=${{secrets.BACKLOG_USER_API_KEY}}'

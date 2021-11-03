@@ -23,4 +23,5 @@ jobs:
         if: ${{steps.issue-id.outputs.result != null && steps.issue-id.outputs.result != ''}}
         run: |
           echo ${{steps.issue-id.outputs.result}}
-          curl --location --request GET "https://ventus-inc.backlog.com/api/v2/issues/${ steps.issue-id.outputs.result }?apiKey=${{secrets.BACKLOG_USER_API_KEY}}"
+          ISSUEID=${{ steps.issue-id.outputs.result }}
+          curl --location --request GET "https://ventus-inc.backlog.com/api/v2/issues/${ISSUEID}?apiKey=${{secrets.BACKLOG_USER_API_KEY}}"

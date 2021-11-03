@@ -24,4 +24,4 @@ jobs:
         run: |
           echo ${{steps.issue-id.outputs.result}}
           ISSUEID=${{ steps.issue-id.outputs.result }}
-          curl --location --request GET "https://ventus-inc.backlog.com/api/v2/issues/${ISSUEID}?apiKey=${{secrets.BACKLOG_USER_API_KEY}}"
+          curl -sS -I -L --request GET "https://ventus-inc.backlog.com/api/v2/issues/${ISSUEID}?apiKey=${{secrets.BACKLOG_USER_API_KEY}}"
